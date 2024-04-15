@@ -55,7 +55,7 @@ public class App {
                 
             }
             System.out.println("\n\nDesea probar con otro grafo?\n1)Si\n2)No");
-            salir = (scan.nextInt() == 2)? true:salir;   
+            salir = scan.nextInt() == 2;
         }
         scan.close();
 
@@ -69,22 +69,22 @@ public class App {
                 direccion = "act9/src/main/java/com/paths/Grafos/G1.txt";
                 break;
             case 2:
-                direccion = "C:/Users/Christian/Documents/Proyectos/BusquedaEnGrafos/grafos/src/main/java/com/busqueda/Grafos/G2.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G2.txt";
                 break;
             case 3:
-                direccion = "C:/Users/Christian/Documents/Proyectos/BusquedaEnGrafos/grafos/src/main/java/com/busqueda/Grafos/G3.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G3.txt";
                 break;
             case 4:
-                direccion = "C:/Users/Christian/Documents/Proyectos/BusquedaEnGrafos/grafos/src/main/java/com/busqueda/Grafos/G4.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G4.txt";
                 break;
             case 5:
-                direccion = "C:/Users/Christian/Documents/Proyectos/BusquedaEnGrafos/grafos/src/main/java/com/busqueda/Grafos/G5.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G5.txt";
                 break;
             case 6:
-                direccion = "C:/Users/Christian/Documents/Proyectos/BusquedaEnGrafos/grafos/src/main/java/com/busqueda/Grafos/G6.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G6.txt";
                 break;
             case 7:
-                direccion = "C:/Users/Christian/Documents/Proyectos/BusquedaEnGrafos/grafos/src/main/java/com/busqueda/Grafos/G7.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G7.txt";
                 break;
             case 8:
                 direccion = "act9/src/main/java/com/paths/Grafos/G8.txt";
