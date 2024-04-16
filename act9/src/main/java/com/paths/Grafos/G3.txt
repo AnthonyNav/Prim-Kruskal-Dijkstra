@@ -1,8 +1,8 @@
-A:E C S
-B:E F
-C:A S D
-D:S C
-E:A F B
-F:B E S G
-G:F S
-S:A C D F G
+A:C-4 E-5 S-1
+B:E-3 F-2
+C:A-4 D-1 S-0
+D:C-1 S-1
+E:A-5 B-3 F-2
+F:B-2 E-2 G-2 S-3
+G:F-2 S-1
+S:A-1 C-0 D-1 F-3 G-1

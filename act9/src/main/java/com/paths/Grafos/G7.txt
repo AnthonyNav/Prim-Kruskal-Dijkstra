@@ -1,13 +1,13 @@
-A:B J C
-B:A C E D
-C:A B E G
-D:G B
-E:B C K F
-F:E G H K
-G:C D F H I
-H:F J G
-I:G J K L
-J:A H I
-K:F I L E
-L:K I
+A:B-16 C-10 J-12
+B:A-16 C-7 D-13 E-2
+C:A-10 B-7 E-13 G-21
+D:B-13 G-15
+E:B-2 C-1 F-9 K-4
+F:E-9 G-3 H-20 K-8
+G:C-21 D-15 F-3 H-18 I-17
+H:F-20 G-18 J-19
+I:G-17 J-5 K-6 L-14
+J:A-12 H-19 I-5
+K:E-4 F-8 I-6 L-11
+L:I-14 K-6
 
