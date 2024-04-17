@@ -42,8 +42,10 @@ public class App {
                         System.out.println("Kruskal");
                         break;
                     case 3:
-                        System.out.println("dijkstra");
+                        System.out.println("Dame un vertice inicial:");
                         // Algoritmo de dijkstra
+                        scan.nextLine();
+                        dijkstra(scan.nextLine().replaceAll(" ","").toUpperCase());
                         break;
                     case 4:
                         salirMenu = true;
@@ -66,28 +68,28 @@ public class App {
         String direccion = "";
         switch (gn) {
             case 1:
-                direccion = "act9/src/main/java/com/paths/Grafos/G1.txt";
+                direccion = "src/main/java/com/paths/Grafos/G1.txt";
                 break;
             case 2:
-                direccion = "act9/src/main/java/com/paths/Grafos/G2.txt";
+                direccion = "src/main/java/com/paths/Grafos/G2.txt";
                 break;
             case 3:
-                direccion = "act9/src/main/java/com/paths/Grafos/G3.txt";
+                direccion = "src/main/java/com/paths/Grafos/G3.txt";
                 break;
             case 4:
-                direccion = "act9/src/main/java/com/paths/Grafos/G4.txt";
+                direccion = "src/main/java/com/paths/Grafos/G4.txt";
                 break;
             case 5:
-                direccion = "act9/src/main/java/com/paths/Grafos/G5.txt";
+                direccion = "src/main/java/com/paths/Grafos/G5.txt";
                 break;
             case 6:
-                direccion = "act9/src/main/java/com/paths/Grafos/G6.txt";
+                direccion = "src/main/java/com/paths/Grafos/G6.txt";
                 break;
             case 7:
-                direccion = "act9/src/main/java/com/paths/Grafos/G7.txt";
+                direccion = "src/main/java/com/paths/Grafos/G7.txt";
                 break;
             case 8:
-                direccion = "act9/src/main/java/com/paths/Grafos/G8.txt";
+                direccion = "src/main/java/com/paths/Grafos/G8.txt";
                 break;
             default:
                 System.out.println("Opcion no valida");
@@ -140,4 +142,29 @@ public class App {
             return false;
         }
     }
-}
+
+    public static void dijkstra(String nodeInit){
+        int i;
+        Node auxP = null;
+        // Buscando su lista de adyacencia
+        ListaLSimple auxL = adjacent;
+        while (auxL != null && auxL.getVertex().replaceAll(" ","").compareTo(nodeInit) != 0 ){
+            System.out.println(auxL.getVertex());
+            auxL = auxL.getNextList();
+        }
+        String[] nodes = distance.keySet().toArray(new String[0]);
+        System.out.println(auxL.getVertex());
+        for (i = 0; i < father.size(); i++) {
+                auxP = auxL.getNodeX(nodes[i]);
+               if (auxP != null){
+                   distance.replace(auxP.getVertex(),auxP.getWeight());
+               } else {
+                   distance.replace(nodes[i],Integer.MAX_VALUE);
+               }
+        }
+        for (i = 0; i < father.size(); i++) {
+            System.out.println( i + nodes[i] + " " + String.valueOf(distance.get(nodes[i])));
+            }
+        }
+    }
+
