@@ -155,15 +155,14 @@ public class App {
         String[] nodes = distance.keySet().toArray(new String[0]);
         System.out.println(auxL.getVertex());
         for (i = 0; i < father.size(); i++) {
-                auxP = auxL.getNodeX(nodes[i]);
+
+                auxP = auxL.getNodeX(nodes[i].replaceAll(" ",""));
                if (auxP != null){
                    distance.replace(auxP.getVertex(),auxP.getWeight());
-               } else {
-                   distance.replace(nodes[i],Integer.MAX_VALUE);
                }
         }
         for (i = 0; i < father.size(); i++) {
-            System.out.println( i + nodes[i] + " " + String.valueOf(distance.get(nodes[i])));
+            System.out.println( i +": "+ nodes[i] + " " + String.valueOf(distance.get(nodes[i])));
             }
         }
     }
