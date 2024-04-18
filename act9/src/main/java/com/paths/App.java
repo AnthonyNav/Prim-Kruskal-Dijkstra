@@ -68,7 +68,7 @@ public class App {
         String direccion = "";
         switch (gn) {
             case 1:
-                direccion = "src/main/java/com/paths/Grafos/G1.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G1.txt";
                 break;
             case 2:
                 direccion = "src/main/java/com/paths/Grafos/G2.txt";
@@ -89,7 +89,7 @@ public class App {
                 direccion = "src/main/java/com/paths/Grafos/G7.txt";
                 break;
             case 8:
-                direccion = "src/main/java/com/paths/Grafos/G8.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G8.txt";
                 break;
             default:
                 System.out.println("Opcion no valida");
@@ -129,7 +129,7 @@ public class App {
                 }
                 
 
-                System.out.println("Lista "+aux.getVertex()+": " + aux); // Para ver lo como esta leyendo el archivo
+                System.out.println(String.format("Lista %-2s: ",aux.getVertex()) + aux); // Para ver lo como esta leyendo el archivo
                 aux.setNextList(new ListaLSimple());
                 aux = aux.getNextList();
             }
@@ -150,7 +150,7 @@ public class App {
         // Buscando su lista de adyacencia
         ListaLSimple auxL = adjacent;
         while (auxL != null && auxL.getVertex().compareTo(nodeInit) != 0 ){
-            System.out.println(auxL.getVertex());
+            //System.out.println(auxL.getVertex());
             auxL = auxL.getNextList();
         }
         // Preparando los arreglos
@@ -165,7 +165,7 @@ public class App {
                }
         }
         //Inicializando los valores para nuestro vertice inicial
-        distance.replace(nodeInit,0); //Usamos el -1 para indicar que nuestro
+        distance.replace(nodeInit,0); //Usamos el -0 para indicar que nuestro
         father.replace(nodeInit,"-");
         visited.replace(nodeInit,true);
 
@@ -201,6 +201,7 @@ public class App {
         Scanner scan = new Scanner(System.in);
         System.out.println("Dame el vertice final");
         v = scan.nextLine().toUpperCase().replaceAll(" ","");
+        System.out.print("Camino: ");
         printPath(v, nodeInit);
         System.out.println("\nCosto:"+ distance.get(v));
       }
