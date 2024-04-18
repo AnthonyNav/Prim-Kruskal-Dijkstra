@@ -179,7 +179,7 @@ public class App {
 
         for (i = 0; i < visited.size()-1 ; i++) {
             v = vMinimo();
-            System.out.println("El Vertice de distancia minimo es: "+v);
+            //System.out.println("El Vertice de distancia minimo es: "+v);
             visited.replace(v,true);
             auxL = adjacent; // Preparando la busqueda de la lista de w
             while (auxL.getVertex().compareTo(v)!=0){
@@ -198,6 +198,11 @@ public class App {
         System.out.println(distance.entrySet());
         System.out.println("Caminos");
         System.out.println(father.entrySet());
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Dame el vertice final");
+        v = scan.nextLine().toUpperCase().replaceAll(" ","");
+        printPath(v, nodeInit);
+        System.out.println("\nCosto:"+ distance.get(v));
       }
 
       public static String vMinimo(){ // Regresa el vertice minimo de D que no este visitado, sino existe retorna null
@@ -213,6 +218,11 @@ public class App {
               }
           }
         return aux;
+      }
+
+      public static void printPath(String vf, String vi){
+        if (vf.compareTo(vi)!=0) printPath(father.get(vf), vi);
+        System.out.print(vf + " " );
       }
     }
 
