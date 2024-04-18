@@ -49,8 +49,11 @@ public class ListaLSimple {
 
     public Node getNodeX(String vertex){ // Nos retorna el nodo con el vertice ingresado por parametros
         Node auxNodo = start;
-        while (auxNodo.getVertex().compareTo(vertex) != 0 && auxNodo != null) { 
+        while (auxNodo.getVertex().replaceAll(" ", "").compareTo(vertex) != 0) {
             auxNodo = auxNodo.getNext();
+            if (auxNodo == null) {
+                break;
+            }
         }
         return auxNodo; // Si existe el vertice, retorna el nodo, sino retornara null
     }

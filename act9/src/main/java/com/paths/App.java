@@ -42,8 +42,10 @@ public class App {
                         System.out.println("Kruskal");
                         break;
                     case 3:
-                        System.out.println("dijkstra");
+                        System.out.println("Dame un vertice inicial:");
                         // Algoritmo de dijkstra
+                        scan.nextLine();
+                        dijkstra(scan.nextLine().replaceAll(" ","").toUpperCase());
                         break;
                     case 4:
                         salirMenu = true;
@@ -66,28 +68,28 @@ public class App {
         String direccion = "";
         switch (gn) {
             case 1:
-                direccion = "act9/src/main/java/com/paths/Grafos/G1.txt";
+                direccion = "src/main/java/com/paths/Grafos/G1.txt";
                 break;
             case 2:
-                direccion = "act9/src/main/java/com/paths/Grafos/G2.txt";
+                direccion = "src/main/java/com/paths/Grafos/G2.txt";
                 break;
             case 3:
-                direccion = "act9/src/main/java/com/paths/Grafos/G3.txt";
+                direccion = "src/main/java/com/paths/Grafos/G3.txt";
                 break;
             case 4:
-                direccion = "act9/src/main/java/com/paths/Grafos/G4.txt";
+                direccion = "src/main/java/com/paths/Grafos/G4.txt";
                 break;
             case 5:
-                direccion = "act9/src/main/java/com/paths/Grafos/G5.txt";
+                direccion = "src/main/java/com/paths/Grafos/G5.txt";
                 break;
             case 6:
-                direccion = "act9/src/main/java/com/paths/Grafos/G6.txt";
+                direccion = "src/main/java/com/paths/Grafos/G6.txt";
                 break;
             case 7:
-                direccion = "act9/src/main/java/com/paths/Grafos/G7.txt";
+                direccion = "src/main/java/com/paths/Grafos/G7.txt";
                 break;
             case 8:
-                direccion = "act9/src/main/java/com/paths/Grafos/G8.txt";
+                direccion = "src/main/java/com/paths/Grafos/G8.txt";
                 break;
             default:
                 System.out.println("Opcion no valida");
@@ -112,7 +114,8 @@ public class App {
                 linea = scanner.nextLine();           
                 // System.out.println(linea);                     
                 str = linea.split(":");                
-                aux.setVertex(String.format("%-2s", str[0].replaceAll(" ", "")));
+                //aux.setVertex(String.format("%-2s", str[0].replaceAll(" ", "")));
+                aux.setVertex(str[0].replaceAll(" ", ""));
                 // Inicializacion de arreglos
                 father.put(str[0].replaceAll(" ", ""), "-");
                 distance.put(str[0].replaceAll(" ", ""), Integer.MAX_VALUE);
@@ -140,4 +143,86 @@ public class App {
             return false;
         }
     }
-}
+
+    public static void dijkstra(String nodeInit){
+        int i;String v;
+        Node auxP = null;
+        // Buscando su lista de adyacencia
+        ListaLSimple auxL = adjacent;
+        while (auxL != null && auxL.getVertex().compareTo(nodeInit) != 0 ){
+            System.out.println(auxL.getVertex());
+            auxL = auxL.getNextList();
+        }
+        // Preparando los arreglos
+        String[] nodes = distance.keySet().toArray(new String[0]);
+        for (i = 0; i < father.size(); i++) {
+                auxP = auxL.getNodeX(nodes[i].replaceAll(" ",""));
+               if (auxP != null){
+                   distance.replace(auxP.getVertex(),auxP.getWeight());
+               }
+               if (nodes[i].compareTo(nodeInit) != 0){
+                   father.replace(nodes[i] , nodeInit);
+               }
+        }
+        //Inicializando los valores para nuestro vertice inicial
+        distance.replace(nodeInit,0); //Usamos el -1 para indicar que nuestro
+        father.replace(nodeInit,"-");
+        visited.replace(nodeInit,true);
+
+//        for (i = 0; i < father.size(); i++) {
+//            System.out.println( i +": "+ nodes[i] + " " + String.valueOf(distance.get(nodes[i])));
+//            System.out.println( i +": "+ nodes[i] + " " + String.valueOf(visited.get(nodes[i])));
+//            System.out.println( i +": "+ nodes[i] + " " + String.valueOf(father.get(nodes[i]))+"\n");
+//            }
+
+        // Inicio del algoritmo
+
+        for (i = 0; i < visited.size()-1 ; i++) {
+            v = vMinimo();
+            //System.out.println("El Vertice de distancia minimo es: "+v);
+            visited.replace(v,true);
+            auxL = adjacent; // Preparando la busqueda de la lista de w
+            while (auxL.getVertex().compareTo(v)!=0){
+                auxL = auxL.getNextList();
+            }
+            auxP = auxL.getStart();
+            while (auxP!=null){
+                if (!visited.get(auxP.getVertex())&&(distance.get(v)+auxP.getWeight()<distance.get(auxP.getVertex()))){
+                    distance.replace(auxP.getVertex(),distance.get(v)+auxP.getWeight());
+                    father.replace(auxP.getVertex(),v);
+                }
+                auxP = auxP.getNext();
+            }
+        }
+        System.out.println("Impresion de los arreglos\nDistancia");
+        System.out.println(distance.entrySet());
+        System.out.println("Caminos");
+        System.out.println(father.entrySet());
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Dame el vertice final");
+        v = scan.nextLine().toUpperCase().replaceAll(" ","");
+        printPath(v, nodeInit);
+        System.out.println("\nCosto:"+ distance.get(v));
+      }
+
+      public static String vMinimo(){ // Regresa el vertice minimo de D que no este visitado, sino existe retorna null
+        String aux = null;
+        int auxv = Integer.MAX_VALUE, i;
+        String[] vertNodes = visited.keySet().toArray(new String[0]);
+          for (i = 0; i < visited.size(); i++) {
+              if (!visited.get(vertNodes[i])){
+                  if (distance.get(vertNodes[i])<auxv){
+                      auxv = distance.get(vertNodes[i]);
+                      aux = vertNodes[i];
+                  }
+              }
+          }
+        return aux;
+      }
+
+      public static void printPath(String vf, String vi){
+        if (vf.compareTo(vi)!=0) printPath(father.get(vf), vi);
+        System.out.print(vf + " " );
+      }
+    }
+
