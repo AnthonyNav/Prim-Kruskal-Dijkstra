@@ -52,7 +52,6 @@ public class App {
                         // Algoritmo de dijkstra
                         scan.nextLine();
                         dijkstra(scan.nextLine().replaceAll(" ","").toUpperCase());
-                        resetDijkstra();
                         break;
                     case 4:
                         salirMenu = true;
@@ -61,6 +60,7 @@ public class App {
                         System.out.println("Opcion no valida");
                         break;
                 }
+                resetDijkstra();
 
             }
             System.out.println("\n\nDesea probar con otro grafo?\n1)Si\n2)No");
@@ -75,28 +75,28 @@ public class App {
         String direccion = "";
         switch (gn) {
             case 1:
-                direccion = "act9/src/main/java/com/paths/Grafos/G1.txt";
+                direccion = "src/main/java/com/paths/Grafos/G1.txt";
                 break;
             case 2:
-                direccion = "act9/src/main/java/com/paths/Grafos/G2.txt";
+                direccion = "src/main/java/com/paths/Grafos/G2.txt";
                 break;
             case 3:
-                direccion = "act9/src/main/java/com/paths/Grafos/G3.txt";
+                direccion = "src/main/java/com/paths/Grafos/G3.txt";
                 break;
             case 4:
-                direccion = "act9/src/main/java/com/paths/Grafos/G4.txt";
+                direccion = "src/main/java/com/paths/Grafos/G4.txt";
                 break;
             case 5:
-                direccion = "act9/src/main/java/com/paths/Grafos/G5.txt";
+                direccion = "src/main/java/com/paths/Grafos/G5.txt";
                 break;
             case 6:
-                direccion = "act9/src/main/java/com/paths/Grafos/G6.txt";
+                direccion = "src/main/java/com/paths/Grafos/G6.txt";
                 break;
             case 7:
-                direccion = "act9/src/main/java/com/paths/Grafos/G7.txt";
+                direccion = "src/main/java/com/paths/Grafos/G7.txt";
                 break;
             case 8:
-                direccion = "act9/src/main/java/com/paths/Grafos/G8.txt";
+                direccion = "src/main/java/com/paths/Grafos/G8.txt";
                 break;
             default:
                 System.out.println("Opcion no valida");
@@ -338,7 +338,7 @@ public class App {
         String destinationParent = findParent(edge.getDestination(), parent);
 
         if (!sourceParent.equals(destinationParent)) {
-            // No forma ciclo, agregar al árbol de expansión mínima
+            // No forma ciclo, agregar al ï¿½rbol de expansiï¿½n mï¿½nima
             minimumSpanningTree.add(edge);
             totalWeight += edge.getWeight();
             // Unir los conjuntos
@@ -346,7 +346,7 @@ public class App {
         }
     }
 
-    // Mostrar el árbol de expansión mínima y su peso total
+    // Mostrar el ï¿½rbol de expansiï¿½n mï¿½nima y su peso total
     System.out.println("Arbol de expansion minimo (Kruskal):");
     for (Edge edge : minimumSpanningTree) {
         System.out.println(edge.getSource() + " - " + edge.getDestination() + " : " + edge.getWeight());
