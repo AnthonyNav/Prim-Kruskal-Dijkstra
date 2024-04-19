@@ -1,5 +1,7 @@
 package com.paths;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -43,6 +45,7 @@ public class App {
                     case 2:
                         // Algoritmo de kruskal
                         System.out.println("Kruskal");
+                        kruskal();
                         break;
                     case 3:
                         System.out.println("Dame un vertice inicial:");
@@ -300,6 +303,62 @@ public class App {
             }
         }
         return minKey;
+    }
+    
+    //Kruskal
+    private static ArrayList<Edge> getAllEdges() {
+    ArrayList<Edge> edges = new ArrayList<>();
+    ListaLSimple aux = adjacent;
+    while (aux != null) {
+        Node node = aux.getStart();
+        while (node != null) {
+            edges.add(new Edge(aux.getVertex(), node.getVertex(), node.getWeight()));
+            node = node.getNext();
+        }
+        aux = aux.getNextList();
+    }
+    return edges;
+    }
+    
+    public static void kruskal() {
+    ArrayList<Edge> allEdges = getAllEdges();
+    Collections.sort(allEdges); // Ordenar todas las aristas por peso
+
+    // Inicializar conjuntos disjuntos
+    HashMap<String, String> parent = new HashMap<>();
+    for (String vertex : father.keySet()) {
+        parent.put(vertex, vertex);
+    }
+
+    // Algoritmo de Kruskal
+    ArrayList<Edge> minimumSpanningTree = new ArrayList<>();
+    int totalWeight = 0;
+    for (Edge edge : allEdges) {
+        String sourceParent = findParent(edge.getSource(), parent);
+        String destinationParent = findParent(edge.getDestination(), parent);
+
+        if (!sourceParent.equals(destinationParent)) {
+            // No forma ciclo, agregar al árbol de expansión mínima
+            minimumSpanningTree.add(edge);
+            totalWeight += edge.getWeight();
+            // Unir los conjuntos
+            parent.put(destinationParent, sourceParent);
+        }
+    }
+
+    // Mostrar el árbol de expansión mínima y su peso total
+    System.out.println("Arbol de expansion minimo (Kruskal):");
+    for (Edge edge : minimumSpanningTree) {
+        System.out.println(edge.getSource() + " - " + edge.getDestination() + " : " + edge.getWeight());
+    }
+    System.out.println("Peso total del arbol: " + totalWeight);
+    }
+
+    private static String findParent(String vertex, HashMap<String, String> parent) {
+    if (!parent.get(vertex).equals(vertex)) {
+        parent.put(vertex, findParent(parent.get(vertex), parent));
+    }
+    return parent.get(vertex);
     }
 }
 
