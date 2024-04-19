@@ -229,7 +229,6 @@ public class App {
     }
 
     public static void prim(String nodeInit) {
-        int i;
         // Inicialización de las estructuras de datos
         for (String vertex : father.keySet()) {
             visited.put(vertex, false);
@@ -241,10 +240,15 @@ public class App {
         distance.put(nodeInit, 0);
 
         // Algoritmo de Prim
-        for (i = 0; i < visited.size() - 1; i++) {
+        System.out.println("Arbol de Expansion Minimo:");
+        for (int i = 0; i < visited.size() - 1; i++) {
             String u = minKey(distance, visited); // Seleccionamos el vértice con la clave mínima
 
             visited.put(u, true); // Agregamos el vértice al árbol
+
+            if (!father.get(u).equals("-")) {
+                System.out.println(father.get(u) + " - " + u);
+            }
 
             // Actualizamos los pesos y padres de los vértices adyacentes a u
             ListaLSimple adjList = adjacent;
@@ -265,12 +269,10 @@ public class App {
             }
         }
 
-        // Mostrar el árbol de expansión mínimo y su peso total
+        // Mostrar el peso total del árbol
         int totalWeight = 0;
-        System.out.println("Arbol de expansion minimo:");
         for (String vertex : father.keySet()) {
             if (!father.get(vertex).equals("-")) {
-                System.out.println(father.get(vertex) + " - " + vertex);
                 totalWeight += distance.get(vertex);
             }
         }
