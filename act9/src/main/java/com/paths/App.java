@@ -240,15 +240,12 @@ public class App {
         distance.put(nodeInit, 0);
 
         // Algoritmo de Prim
-        System.out.println("Arbol de Expansion Minimo:");
-        for (int i = 0; i < visited.size() - 1; i++) {
-            String u = minKey(distance, visited); // Seleccionamos el vértice con la clave mínima
+        System.out.println("Arbol de Expansion Minimo: ");
+        while (true) {
+            String u = minKey(distance, visited);
+            if (u == null) break;
 
-            visited.put(u, true); // Agregamos el vértice al árbol
-
-            if (!father.get(u).equals("-")) {
-                System.out.println(father.get(u) + " - " + u);
-            }
+            visited.put(u, true); // Marcamos el vértice como visitado
 
             // Actualizamos los pesos y padres de los vértices adyacentes a u
             ListaLSimple adjList = adjacent;
@@ -267,9 +264,11 @@ public class App {
                     adjNode = adjNode.getNext();
                 }
             }
+            if (!father.get(u).equals("-")) {
+                System.out.println(father.get(u) + " - " + u);
+            }
         }
 
-        // Mostrar el peso total del árbol
         int totalWeight = 0;
         for (String vertex : father.keySet()) {
             if (!father.get(vertex).equals("-")) {
@@ -278,6 +277,7 @@ public class App {
         }
         System.out.println("Peso total del arbol: " + totalWeight);
     }
+
 
     // Método auxiliar para encontrar la clave mínima en el mapa de distancias
     private static String minKey(HashMap<String, Integer> distance, HashMap<String, Boolean> visited) {
