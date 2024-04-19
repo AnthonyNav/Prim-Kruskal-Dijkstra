@@ -1,5 +1,7 @@
 package com.paths;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -14,7 +16,7 @@ public class App {
     private static HashMap<String, Boolean> visited; // Arreglo de visitado
     private static String[] sequence; // Orden
     public static void main(String[] args) {
-        
+
         Scanner scan = new Scanner(System.in);
         boolean salir = false;
         boolean salirMenu;
@@ -36,10 +38,14 @@ public class App {
                     case 1:
                         // Algoritmo de prim 
                         System.out.println("Prim");
+                        System.out.println("Dame un vertice inicial:");
+                        scan.nextLine(); // Consumir el salto de línea pendiente
+                        prim(scan.nextLine().replaceAll(" ","").toUpperCase());
                         break;
                     case 2:
                         // Algoritmo de kruskal
                         System.out.println("Kruskal");
+                        kruskal();
                         break;
                     case 3:
                         System.out.println("Dame un vertice inicial:");
@@ -51,10 +57,10 @@ public class App {
                         salirMenu = true;
                         break;
                     default:
-                    System.out.println("Opcion no valida");
+                        System.out.println("Opcion no valida");
                         break;
                 }
-                
+
             }
             System.out.println("\n\nDesea probar con otro grafo?\n1)Si\n2)No");
             salir = scan.nextInt() == 2;
@@ -111,9 +117,9 @@ public class App {
 
             // Leer el archivo línea por línea
             while (scanner.hasNextLine()) {
-                linea = scanner.nextLine();           
+                linea = scanner.nextLine();
                 // System.out.println(linea);                     
-                str = linea.split(":");                
+                str = linea.split(":");
                 //aux.setVertex(String.format("%-2s", str[0].replaceAll(" ", "")));
                 aux.setVertex(str[0].replaceAll(" ", ""));
                 // Inicializacion de arreglos
@@ -127,7 +133,7 @@ public class App {
                     vert = s.split("-");
                     aux.insert(vert[0], Integer.parseInt(vert[1]));
                 }
-                
+
 
                 System.out.println("Lista "+aux.getVertex()+": " + aux); // Para ver lo como esta leyendo el archivo
                 aux.setNextList(new ListaLSimple());
@@ -156,13 +162,13 @@ public class App {
         // Preparando los arreglos
         String[] nodes = distance.keySet().toArray(new String[0]);
         for (i = 0; i < father.size(); i++) {
-                auxP = auxL.getNodeX(nodes[i].replaceAll(" ",""));
-               if (auxP != null){
-                   distance.replace(auxP.getVertex(),auxP.getWeight());
-               }
-               if (nodes[i].compareTo(nodeInit) != 0){
-                   father.replace(nodes[i] , nodeInit);
-               }
+            auxP = auxL.getNodeX(nodes[i].replaceAll(" ",""));
+            if (auxP != null){
+                distance.replace(auxP.getVertex(),auxP.getWeight());
+            }
+            if (nodes[i].compareTo(nodeInit) != 0){
+                father.replace(nodes[i] , nodeInit);
+            }
         }
         //Inicializando los valores para nuestro vertice inicial
         distance.replace(nodeInit,0); //Usamos el -1 para indicar que nuestro
@@ -203,26 +209,144 @@ public class App {
         v = scan.nextLine().toUpperCase().replaceAll(" ","");
         printPath(v, nodeInit);
         System.out.println("\nCosto:"+ distance.get(v));
-      }
+    }
 
-      public static String vMinimo(){ // Regresa el vertice minimo de D que no este visitado, sino existe retorna null
+    public static String vMinimo(){ // Regresa el vertice minimo de D que no este visitado, sino existe retorna null
         String aux = null;
         int auxv = Integer.MAX_VALUE, i;
         String[] vertNodes = visited.keySet().toArray(new String[0]);
-          for (i = 0; i < visited.size(); i++) {
-              if (!visited.get(vertNodes[i])){
-                  if (distance.get(vertNodes[i])<auxv){
-                      auxv = distance.get(vertNodes[i]);
-                      aux = vertNodes[i];
-                  }
-              }
-          }
+        for (i = 0; i < visited.size(); i++) {
+            if (!visited.get(vertNodes[i])){
+                if (distance.get(vertNodes[i])<auxv){
+                    auxv = distance.get(vertNodes[i]);
+                    aux = vertNodes[i];
+                }
+            }
+        }
         return aux;
-      }
+    }
 
-      public static void printPath(String vf, String vi){
+    public static void printPath(String vf, String vi){
         if (vf.compareTo(vi)!=0) printPath(father.get(vf), vi);
         System.out.print(vf + " " );
-      }
     }
+
+    public static void prim(String nodeInit) {
+        int i;
+        // Inicialización de las estructuras de datos
+        for (String vertex : father.keySet()) {
+            visited.put(vertex, false);
+            father.put(vertex, "-");
+            distance.put(vertex, Integer.MAX_VALUE);
+        }
+
+        // El vértice inicial tiene un peso de 0
+        distance.put(nodeInit, 0);
+
+        // Algoritmo de Prim
+        for (i = 0; i < visited.size() - 1; i++) {
+            String u = minKey(distance, visited); // Seleccionamos el vértice con la clave mínima
+
+            visited.put(u, true); // Agregamos el vértice al árbol
+
+            // Actualizamos los pesos y padres de los vértices adyacentes a u
+            ListaLSimple adjList = adjacent;
+            while (adjList != null && !adjList.getVertex().equals(u)) {
+                adjList = adjList.getNextList();
+            }
+            if (adjList != null) {
+                Node adjNode = adjList.getStart();
+                while (adjNode != null) {
+                    String v = adjNode.getVertex();
+                    int weight = adjNode.getWeight();
+                    if (!visited.get(v) && weight < distance.get(v)) {
+                        father.put(v, u);
+                        distance.put(v, weight);
+                    }
+                    adjNode = adjNode.getNext();
+                }
+            }
+        }
+
+        // Mostrar el árbol de expansión mínimo y su peso total
+        int totalWeight = 0;
+        System.out.println("Arbol de expansion minimo:");
+        for (String vertex : father.keySet()) {
+            if (!father.get(vertex).equals("-")) {
+                System.out.println(father.get(vertex) + " - " + vertex);
+                totalWeight += distance.get(vertex);
+            }
+        }
+        System.out.println("Peso total del arbol: " + totalWeight);
+    }
+
+    // Método auxiliar para encontrar la clave mínima en el mapa de distancias
+    private static String minKey(HashMap<String, Integer> distance, HashMap<String, Boolean> visited) {
+        int min = Integer.MAX_VALUE;
+        String minKey = null;
+        for (String vertex : distance.keySet()) {
+            if (!visited.get(vertex) && distance.get(vertex) < min) {
+                min = distance.get(vertex);
+                minKey = vertex;
+            }
+        }
+        return minKey;
+    }
+    
+    //Kruskal
+    private static ArrayList<Edge> getAllEdges() {
+    ArrayList<Edge> edges = new ArrayList<>();
+    ListaLSimple aux = adjacent;
+    while (aux != null) {
+        Node node = aux.getStart();
+        while (node != null) {
+            edges.add(new Edge(aux.getVertex(), node.getVertex(), node.getWeight()));
+            node = node.getNext();
+        }
+        aux = aux.getNextList();
+    }
+    return edges;
+    }
+    
+    public static void kruskal() {
+    ArrayList<Edge> allEdges = getAllEdges();
+    Collections.sort(allEdges); // Ordenar todas las aristas por peso
+
+    // Inicializar conjuntos disjuntos
+    HashMap<String, String> parent = new HashMap<>();
+    for (String vertex : father.keySet()) {
+        parent.put(vertex, vertex);
+    }
+
+    // Algoritmo de Kruskal
+    ArrayList<Edge> minimumSpanningTree = new ArrayList<>();
+    int totalWeight = 0;
+    for (Edge edge : allEdges) {
+        String sourceParent = findParent(edge.getSource(), parent);
+        String destinationParent = findParent(edge.getDestination(), parent);
+
+        if (!sourceParent.equals(destinationParent)) {
+            // No forma ciclo, agregar al �rbol de expansi�n m�nima
+            minimumSpanningTree.add(edge);
+            totalWeight += edge.getWeight();
+            // Unir los conjuntos
+            parent.put(destinationParent, sourceParent);
+        }
+    }
+
+    // Mostrar el �rbol de expansi�n m�nima y su peso total
+    System.out.println("Arbol de expansion minimo (Kruskal):");
+    for (Edge edge : minimumSpanningTree) {
+        System.out.println(edge.getSource() + " - " + edge.getDestination() + " : " + edge.getWeight());
+    }
+    System.out.println("Peso total del arbol: " + totalWeight);
+    }
+
+    private static String findParent(String vertex, HashMap<String, String> parent) {
+    if (!parent.get(vertex).equals(vertex)) {
+        parent.put(vertex, findParent(parent.get(vertex), parent));
+    }
+    return parent.get(vertex);
+    }
+}
 
