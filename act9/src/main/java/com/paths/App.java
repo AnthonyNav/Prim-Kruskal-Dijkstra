@@ -49,6 +49,7 @@ public class App {
                         // Algoritmo de dijkstra
                         scan.nextLine();
                         dijkstra(scan.nextLine().replaceAll(" ","").toUpperCase());
+                        resetDijkstra();
                         break;
                     case 4:
                         salirMenu = true;
@@ -74,22 +75,22 @@ public class App {
                 direccion = "act9/src/main/java/com/paths/Grafos/G1.txt";
                 break;
             case 2:
-                direccion = "src/main/java/com/paths/Grafos/G2.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G2.txt";
                 break;
             case 3:
-                direccion = "src/main/java/com/paths/Grafos/G3.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G3.txt";
                 break;
             case 4:
-                direccion = "src/main/java/com/paths/Grafos/G4.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G4.txt";
                 break;
             case 5:
-                direccion = "src/main/java/com/paths/Grafos/G5.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G5.txt";
                 break;
             case 6:
-                direccion = "src/main/java/com/paths/Grafos/G6.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G6.txt";
                 break;
             case 7:
-                direccion = "src/main/java/com/paths/Grafos/G7.txt";
+                direccion = "act9/src/main/java/com/paths/Grafos/G7.txt";
                 break;
             case 8:
                 direccion = "act9/src/main/java/com/paths/Grafos/G8.txt";
@@ -227,6 +228,14 @@ public class App {
     public static void printPath(String vf, String vi){
         if (vf.compareTo(vi)!=0) printPath(father.get(vf), vi);
         System.out.print(vf + " " );
+    }
+
+    public static void resetDijkstra(){
+        String[] nodes = distance.keySet().toArray(new String[0]);
+        for (String string : nodes) {
+            distance.replace(string, Integer.MAX_VALUE);
+            visited.replace(string, false);
+        }
     }
 
     public static void prim(String nodeInit) {
